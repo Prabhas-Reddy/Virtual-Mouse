@@ -1,5 +1,5 @@
 opencv-python==4.5.5.64
-mediapipe==0.9.0
+mediapipe==0.10.21
 numpy==1.23.5
 pynput==1.7.6
 streamlit==1.25.0
