@@ -1,5 +1,7 @@
-streamlit==1.26.0
-mediapipe==0.10.14
-opencv-python==4.8.1.78
-pyautogui==0.9.54
-numpy==1.24.4
+opencv-python==4.5.5.64
+mediapipe==0.9.0
+numpy==1.23.5
+pynput==1.7.6
+streamlit==1.25.0
+pycaw==20221220
+comtypes==1.1.14
