@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 8501
 
 # Command to run the Streamlit app
-CMD ["streamlit", "run", "mouse.py", "--server.port=8501", "--server.address=192.168.29.105"]
+CMD ["streamlit", "run", "mouse.py", "--server.port=8501", "--server.address=0.0.0.0"]
