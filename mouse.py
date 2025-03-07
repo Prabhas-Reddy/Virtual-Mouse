@@ -150,5 +150,4 @@ def main():
         cap.release()
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 8080))  # Default to 8080 if PORT is not set
-    st.run(port=port, address="0.0.0.0")
+    main()
