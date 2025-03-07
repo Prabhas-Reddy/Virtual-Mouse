@@ -1,16 +1,13 @@
 import cv2
 import mediapipe as mp
 import numpy as np
-import platform
+import pycaw.pycaw as pycaw
 from pynput.mouse import Controller, Button
 import streamlit as st
 import time
-
-# Conditional import for Windows-only modules
-if platform.system() == "Windows":
-    from ctypes import cast, POINTER
-    from comtypes import CLSCTX_ALL
-    from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+from ctypes import cast, POINTER
+from comtypes import CLSCTX_ALL
+from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 
 # Constants
 WIDTH, HEIGHT = 640, 480
@@ -21,13 +18,10 @@ CLICK_DISTANCE = 40
 # Initialize mouse controller
 mouse = Controller()
 
-# Initialize audio control only for Windows
-if platform.system() == "Windows":
-    devices = AudioUtilities.GetSpeakers()
-    interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
-    volume = cast(interface, POINTER(IAudioEndpointVolume))
-else:
-    volume = None  # No volume control on Linux
+# Initialize audio control
+devices = AudioUtilities.GetSpeakers()
+interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+volume = cast(interface, POINTER(IAudioEndpointVolume))
 
 class HandDetector:
     def __init__(self, maxHands=1, detectionCon=0.7, trackCon=0.7):
@@ -140,12 +134,11 @@ def main():
                     if length < CLICK_DISTANCE:
                         mouse.click(Button.right, 1)
 
-                # Volume Control (Only for Windows)
-                if platform.system() == "Windows" and volume:
-                    if fingers[0] == 1 and fingers[1] == 1:
-                        length = detector.findDistance(4, 8, img)
-                        vol = np.interp(length, [30, 200], [volume.GetVolumeRange()[1], volume.GetVolumeRange()[0]])
-                        volume.SetMasterVolumeLevel(vol, None)
+                # Volume Control
+                if fingers[0] == 1 and fingers[1] == 1:
+                    length = detector.findDistance(4, 8, img)
+                    vol = np.interp(length, [30, 200], [volume.GetVolumeRange()[1], volume.GetVolumeRange()[0]])
+                    volume.SetMasterVolumeLevel(vol, None)
 
             cTime = time.time()
             fps = 1 / (cTime - pTime)
